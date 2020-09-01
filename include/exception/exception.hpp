@@ -23,9 +23,9 @@ namespace tractor
         text_exception();
         text_exception(const text_exception&) = default;
         text_exception(text_exception&&) = default;
-        text_exception(const std::string& text);
-        text_exception(std::string&& text);
-        text_exception(const std::exception& e);
+        explicit text_exception(const std::string& text);
+        explicit text_exception(std::string&& text);
+        explicit text_exception(const std::exception& e);
 
         virtual ~text_exception() noexcept override = default;
 
@@ -128,7 +128,8 @@ namespace tractor
         basic_code_exception(const code_translator_type& code_translator = code_translator_type{});
         basic_code_exception(const basic_code_exception& other) = default;
         basic_code_exception(basic_code_exception&& other) = default;
-        basic_code_exception(code_type code, const code_translator_type& code_translator = code_translator_type{});
+        explicit basic_code_exception(const code_type& code, const code_translator_type& code_translator = code_translator_type{});
+        explicit basic_code_exception(code_type&& code, const code_translator_type& code_translator = code_translator_type{});
 
         virtual ~basic_code_exception() noexcept override = default;
 
@@ -136,7 +137,7 @@ namespace tractor
         basic_code_exception& operator=(basic_code_exception&&) = default;
 
         virtual const char* what() const noexcept override;
-        virtual code_type code() const noexcept;
+        virtual const code_type& code() const noexcept;
 
     protected:
         code_type m_code;
@@ -152,9 +153,16 @@ namespace tractor
     }
 
     template<class code_type, class code_translator_type>
-    inline basic_code_exception<code_type, code_translator_type>::basic_code_exception(code_type code, const code_translator_type& code_translator) :
+    inline basic_code_exception<code_type, code_translator_type>::basic_code_exception(const code_type& code, const code_translator_type& code_translator) :
         m_code{code},
-        m_text{code_translator(code)}
+        m_text{code_translator(m_code)}
+    {
+    }
+
+    template<class code_type, class code_translator_type>
+    inline basic_code_exception<code_type, code_translator_type>::basic_code_exception(code_type&& code, const code_translator_type& code_translator) :
+        m_code{std::move(code)},
+        m_text{code_translator(m_code)}
     {
     }
 
@@ -165,7 +173,7 @@ namespace tractor
     }
 
     template<class code_type, class code_translator_type>
-    inline code_type basic_code_exception<code_type, code_translator_type>::code() const noexcept
+    inline const code_type& basic_code_exception<code_type, code_translator_type>::code() const noexcept
     {
         return m_code;
     }
