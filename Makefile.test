@@ -1,0 +1,47 @@
+CXX:=clang++
+CXXFLAGS:=-std=c++11 -Wall -Iinclude -Itest
+LD:=$(CXX)
+LDFLAGS:=
+
+SRCS:=$(shell find test -name "*.cpp" -or -name "*.cc" -or -name "*.cxx")
+TEMP:=$(SRCS)
+TEMP:=$(TEMP:%.cpp=%.temp)
+TEMP:=$(TEMP:%.cc=%.temp)
+TEMP:=$(TEMP:%.cxx=%.temp)
+OBJS:=$(TEMP:%.temp=build/%.o)
+DEPS:=$(TEMP:%.temp=build/%.d)
+
+
+
+default: tractor_test.exe
+
+all: tractor_test.exe
+
+echo:
+	@echo $(SRCS)
+	@echo $(OBJS)
+	@echo $(DEPS)
+
+clean:
+	rm -fr $(OBJS) $(DEPS) tractor_test.exe
+
+-include $(DEPS)
+
+
+
+build/%.o: %.cpp
+	mkdir -p $(shell dirname $@)
+	$(CXX) $(CXXFLAGS) -MMD -MF $(@:%.o=%.d) -c $< -o $@
+
+build/%.o: %.cc
+	mkdir -p $(shell dirname $@)
+	$(CXX) $(CXXFLAGS) -MMD -MF $(@:%.o=%.d) -c $< -o $@
+
+build/%.o: %.cxx
+	mkdir -p $(shell dirname $@)
+	$(CXX) $(CXXFLAGS) -MMD -MF $(@:%.o=%.d) -c $< -o $@
+
+
+
+tractor_test.exe: $(OBJS)
+	$(LD) $(LDFLAGS) $^ -o $@
