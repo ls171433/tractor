@@ -23,7 +23,7 @@ int main()
             }
             catch (std::exception& e)
             {
-                std::printf("%s", e.what());
+                std::puts(e.what());
             }
         }
     }
