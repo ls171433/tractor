@@ -14,58 +14,71 @@
 
 
 
-// class text_exception;
+// class basic_text_exception;
+// using text_exception;
 namespace tractor
 {
-    class text_exception : public std::exception
+    template<class char_traits_type, class allocator_type>
+    class basic_text_exception : public std::exception
     {
     public:
-        text_exception();
-        text_exception(const text_exception&) = default;
-        text_exception(text_exception&&) = default;
-        explicit text_exception(const std::string& text);
-        explicit text_exception(std::string&& text);
-        explicit text_exception(const std::exception& e);
+        using string_type = std::basic_string<char, char_traits_type, allocator_type>;
 
-        virtual ~text_exception() noexcept override = default;
+        basic_text_exception();
+        basic_text_exception(const basic_text_exception&) = default;
+        basic_text_exception(basic_text_exception&&) = default;
+        explicit basic_text_exception(const string_type& text);
+        explicit basic_text_exception(string_type&& text);
+        explicit basic_text_exception(const std::exception& e);
 
-        text_exception& operator=(const text_exception&) = default;
-        text_exception& operator=(text_exception&&) = default;
+        virtual ~basic_text_exception() noexcept override = default;
+
+        basic_text_exception& operator=(const basic_text_exception&) = default;
+        basic_text_exception& operator=(basic_text_exception&&) = default;
 
         virtual const char* what() const noexcept override;
 
     protected:
-        std::string m_text;
+        string_type m_text;
     };
 
 
 
-    inline text_exception::text_exception() :
-        text_exception{"tractor::text_exception"}
+    template<class char_traits_type, class allocator_type>
+    inline basic_text_exception<char_traits_type, allocator_type>::basic_text_exception() :
+        basic_text_exception{"tractor::basic_text_exception"}
     {
     }
 
-    inline text_exception::text_exception(const std::string& text) :
+    template<class char_traits_type, class allocator_type>
+    inline basic_text_exception<char_traits_type, allocator_type>::basic_text_exception(const string_type& text) :
         m_text{text}
     {
     }
 
-    inline text_exception::text_exception(std::string&& text) :
+    template<class char_traits_type, class allocator_type>
+    inline basic_text_exception<char_traits_type, allocator_type>::basic_text_exception(string_type&& text) :
         m_text{std::move(text)}
     {
     }
 
-    inline text_exception::text_exception(const std::exception& e) :
-        text_exception{e.what()}
+    template<class char_traits_type, class allocator_type>
+    inline basic_text_exception<char_traits_type, allocator_type>::basic_text_exception(const std::exception& e) :
+        basic_text_exception{e.what()}
     {
     }
 
 
 
-    inline const char* text_exception::what() const noexcept
+    template<class char_traits_type, class allocator_type>
+    inline const char* basic_text_exception<char_traits_type, allocator_type>::what() const noexcept
     {
         return m_text.c_str();
     }
+
+
+
+    using text_exception = basic_text_exception<std::char_traits<char>, std::allocator<char>>;
 }
 
 
@@ -96,7 +109,7 @@ namespace tractor
 
 
 
-// struct errno_code_translator ;
+// struct errno_code_translator;
 namespace tractor
 {
     struct errno_code_translator
