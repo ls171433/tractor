@@ -14,12 +14,30 @@
 
 
 
-// class basic_text_exception;
+// class exception_base
+namespace tractor
+{
+    class exception_base : public std::exception
+    {
+        virtual const char *what() const noexcept override;
+    };
+
+
+
+    inline const char *exception_base::what() const noexcept
+    {
+        return "tractor::exception_base";
+    }
+}
+
+
+
+// template class basic_text_exception;
 // using text_exception;
 namespace tractor
 {
     template<class char_traits_type, class allocator_type>
-    class basic_text_exception : public std::exception
+    class basic_text_exception : public exception_base
     {
     public:
         using string_type = std::basic_string<char, char_traits_type, allocator_type>;
@@ -36,7 +54,7 @@ namespace tractor
         basic_text_exception& operator=(const basic_text_exception&) = default;
         basic_text_exception& operator=(basic_text_exception&&) = default;
 
-        virtual const char* what() const noexcept override;
+        virtual const char *what() const noexcept override;
 
     protected:
         string_type m_text;
@@ -71,7 +89,7 @@ namespace tractor
 
 
     template<class char_traits_type, class allocator_type>
-    inline const char* basic_text_exception<char_traits_type, allocator_type>::what() const noexcept
+    inline const char *basic_text_exception<char_traits_type, allocator_type>::what() const noexcept
     {
         return m_text.c_str();
     }
@@ -83,7 +101,7 @@ namespace tractor
 
 
 
-// struct numeric_code_translator;
+// template struct numeric_code_translator;
 // using using int_code_translator;
 namespace tractor
 {
@@ -128,14 +146,14 @@ namespace tractor
 
 
 
-// class basic_code_exception;
-// using numeric_code_exception;
+// template class basic_code_exception;
+// template using numeric_code_exception;
 // using int_code_exception;
 // using errno_code_exception;
 namespace tractor
 {
     template<class code_type, class code_translator_type>
-    class basic_code_exception : public std::exception
+    class basic_code_exception : public exception_base
     {
     public:
         basic_code_exception(const code_translator_type& code_translator = code_translator_type{});
@@ -149,7 +167,7 @@ namespace tractor
         basic_code_exception& operator=(const basic_code_exception&) = default;
         basic_code_exception& operator=(basic_code_exception&&) = default;
 
-        virtual const char* what() const noexcept override;
+        virtual const char *what() const noexcept override;
         virtual const code_type& code() const noexcept;
 
     protected:
@@ -180,7 +198,7 @@ namespace tractor
     }
 
     template<class code_type, class code_translator_type>
-    inline const char* basic_code_exception<code_type, code_translator_type>::what() const noexcept
+    inline const char *basic_code_exception<code_type, code_translator_type>::what() const noexcept
     {
         return m_text.c_str();
     }

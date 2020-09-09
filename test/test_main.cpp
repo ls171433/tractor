@@ -11,6 +11,11 @@ int test_module::s_test_module_count = 0;
 
 
 
+int g_succeed = 0;
+int g_failed = 0;
+
+
+
 int main()
 {
     for (test_module_ptr current_test_module_ptr : test_module::s_test_module_list)
@@ -23,8 +28,12 @@ int main()
             }
             catch (std::exception& e)
             {
-                std::puts(e.what());
+                std::printf("caught an exception: %s\n", e.what());
+                std::fflush(stdout);
             }
         }
     }
+
+    std::printf("total succeed: %d, failed: %d\n", g_succeed, g_failed);
+    std::fflush(stdout);
 }
