@@ -3,10 +3,9 @@
 
 
 
-#include <list>
-#include <memory>
+#include <string>
 
-#include <iostream>
+#include <cstdio>
 
 
 
@@ -47,6 +46,47 @@ public:
     static test_module_ptr s_test_module_list[test_module_max];
     static int s_test_module_count;
 };
+
+
+
+extern int g_succeed;
+extern int g_failed;
+
+inline void test_condition(const char *file, int line, bool condition)
+{
+    if (condition)
+    {
+        std::printf("%s:%d test condition succeed\n", file, line);
+        ++g_succeed;
+    }
+    else
+    {
+        std::printf("%s:%d TEST CONDITION FAILED\n", file, line);
+        ++g_failed;
+    }
+    std::fflush(stdout);
+}
+
+inline void test_trace(const char *file, int line, const char *name, int value)
+{
+    std::printf("%s:%d %s = %d\n", file, line, name, value);
+    std::fflush(stdout);
+}
+
+inline void test_trace(const char *file, int line, const char *name, const char *value)
+{
+    std::printf("%s:%d %s = %s\n", file, line, name, value);
+    std::fflush(stdout);
+}
+
+inline void test_trace(const char *file, int line, const char *name, const std::string& value)
+{
+    std::printf("%s:%d %s = %s\n", file, line, name, value.c_str());
+    std::fflush(stdout);
+}
+
+#define TEST_CONDITION(condition) test_condition(__FILE__, __LINE__, (condition))
+#define TEST_TRACE(value) test_trace(__FILE__, __LINE__, #value, value)
 
 
 
