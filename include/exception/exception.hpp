@@ -5,7 +5,12 @@
 
 // for std::exception
 #include <exception>
+// for std::allocator
+#include <memory>
+// for std::basic_string
+// for std::char_traits
 // for std::string
+// for std::to_string
 #include <string>
 // for std::move
 #include <utility>
