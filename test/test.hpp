@@ -1,13 +1,9 @@
 #if !defined TRACTOR_TEST_TEST_HPP
 #define TRACTOR_TEST_TEST_HPP
 
-
-
 #include <string>
 
 #include <cstdio>
-
-
 
 struct test_module;
 using test_module_ptr = test_module *;
@@ -21,18 +17,18 @@ public:
         s_test_module_list[m_position] = this;
     }
 
-    test_module(const test_module&) = delete;
+    test_module(const test_module &) = delete;
 
-    test_module(test_module&&) = delete;
+    test_module(test_module &&) = delete;
 
     virtual ~test_module()
     {
         s_test_module_list[m_position] = nullptr;
     }
 
-    test_module& operator=(const test_module&) = delete;
+    test_module &operator=(const test_module &) = delete;
 
-    test_module& operator=(test_module&&) = delete;
+    test_module &operator=(test_module &&) = delete;
 
     virtual void test()
     {
@@ -46,8 +42,6 @@ public:
     static test_module_ptr s_test_module_list[test_module_max];
     static int s_test_module_count;
 };
-
-
 
 extern int g_succeed;
 extern int g_failed;
@@ -79,7 +73,7 @@ inline void test_trace(const char *file, int line, const char *name, const char 
     std::fflush(stdout);
 }
 
-inline void test_trace(const char *file, int line, const char *name, const std::string& value)
+inline void test_trace(const char *file, int line, const char *name, const std::string &value)
 {
     std::printf("%s:%d %s = %s\n", file, line, name, value.c_str());
     std::fflush(stdout);
@@ -87,7 +81,5 @@ inline void test_trace(const char *file, int line, const char *name, const std::
 
 #define TEST_CONDITION(condition) test_condition(__FILE__, __LINE__, (condition))
 #define TEST_TRACE(value) test_trace(__FILE__, __LINE__, #value, value)
-
-
 
 #endif

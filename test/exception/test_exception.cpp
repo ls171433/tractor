@@ -7,8 +7,6 @@
 using namespace std;
 using namespace tractor;
 
-
-
 struct test_exception : test_module
 {
     virtual void test() override
@@ -53,7 +51,7 @@ struct test_exception : test_module
         }
 
         {
-            exception& e0_ref{e0};
+            exception &e0_ref{e0};
             text_exception e{e0_ref};
             TEST_CONDITION(string{e.what()} == string{text});
         }
