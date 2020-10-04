@@ -32,7 +32,7 @@ namespace tractor
 } // namespace tractor
 
 // template class basic_text_exception;
-// template using text_exception_basic_string;
+// template using text_exception_basic_string_char;
 // using text_exception;
 namespace tractor
 {
@@ -89,7 +89,7 @@ namespace tractor
     }
 
     template <class traits_type_template = std::char_traits<char>, class allocator_type_template = std::allocator<char>>
-    using text_exception_basic_string = basic_text_exception<std::basic_string<char, traits_type_template, allocator_type_template>>;
+    using text_exception_basic_string_char = basic_text_exception<std::basic_string<char, traits_type_template, allocator_type_template>>;
     using text_exception = basic_text_exception<>;
 } // namespace tractor
 
@@ -120,7 +120,7 @@ namespace tractor
 } // namespace tractor
 
 // tempalte struct basic_errno_code_translator;
-// template using errno_code_translator_basic_string;
+// template using errno_code_translator_basic_string_char;
 // using errno_code_translator;
 namespace tractor
 {
@@ -142,7 +142,7 @@ namespace tractor
     }
 
     template <class traits_type_template = std::char_traits<char>, class allocator_type_template = std::allocator<char>>
-    using errno_code_translator_basic_string = basic_errno_code_translator<std::basic_string<char, traits_type_template, allocator_type_template>>;
+    using errno_code_translator_basic_string_char = basic_errno_code_translator<std::basic_string<char, traits_type_template, allocator_type_template>>;
     using errno_code_translator = basic_errno_code_translator<>;
 } // namespace tractor
 
