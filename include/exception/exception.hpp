@@ -69,21 +69,37 @@ namespace tractor
     using text_exception = basic_text_exception<>;
 } // namespace tractor
 
+// template struct basic_code_translator
+namespace tractor
+{
+    template <class code_type_template = int, class string_type_template = std::string>
+    struct basic_code_translator
+    {
+    public:
+        using code_type = code_type_template;
+        using string_type = string_type_template;
+
+        static_assert(std::is_same<typename string_type::value_type, char>::value, "the 'value_type' of 'string_type' is not 'char'");
+
+    public:
+        virtual string_type translate(const code_type &code) const { return string_type{"tractor::basic_code_translator"}; }
+    };
+} // namespace tractor
+
 // template struct numeric_code_translator;
 // using int_code_translator;
 namespace tractor
 {
     template <class code_type_template>
-    struct numeric_code_translator
+    struct numeric_code_translator : public basic_code_translator<code_type_template>
     {
     public:
-        using code_type = code_type_template;
-        using string_type = std::string;
-
-        static_assert(std::is_same<typename string_type::value_type, char>::value, "the 'value_type' of 'string_type' is not 'char'");
+        using parent_type = basic_code_translator<code_type_template>;
+        using typename parent_type::code_type;
+        using typename parent_type::string_type;
 
     public:
-        string_type translate(code_type code) const { return std::to_string(code); }
+        virtual string_type translate(const code_type &code) const override { return std::to_string(code); }
     };
 
     using int_code_translator = numeric_code_translator<int>;
@@ -95,14 +111,15 @@ namespace tractor
 namespace tractor
 {
     template <class string_type_template = std::string>
-    struct basic_errno_code_translator
+    struct basic_errno_code_translator : public basic_code_translator<int, string_type_template>
     {
     public:
-        using code_type = int;
-        using string_type = string_type_template;
+        using parent_type = basic_code_translator<int, string_type_template>;
+        using typename parent_type::code_type;
+        using typename parent_type::string_type;
 
     public:
-        string_type translate(code_type code) const { return string_type{std::strerror(code)}; }
+        virtual string_type translate(const code_type &code) const override { return string_type{std::strerror(code)}; }
     };
 
     template <class traits_type_template = std::char_traits<char>, class allocator_type_template = std::allocator<char>>
@@ -123,8 +140,8 @@ namespace tractor
         using code_translator_type = code_translator_type_template;
         using code_type = typename code_translator_type::code_type;
 
-    private:
-        using parent_type = basic_text_exception<typename code_translator_type::string_type>;
+        using parent_type = basic_text_exception<typename code_translator_type_template::string_type>;
+        using typename parent_type::string_type;
 
     public:
         basic_code_exception() : basic_code_exception(code_type{}, code_translator_type{}) {}
