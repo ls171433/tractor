@@ -44,49 +44,25 @@ namespace tractor
 
         static_assert(std::is_same<typename string_type::value_type, char>::value, "the 'value_type' of 'string_type' is not 'char'");
 
-        basic_text_exception();
+    public:
+        basic_text_exception() : basic_text_exception{"tractor::basic_text_exception"} {}
+        explicit basic_text_exception(const string_type &text) : m_text{text} {}
+        explicit basic_text_exception(string_type &&text) : m_text{std::move(text)} {}
+        explicit basic_text_exception(const std::exception &e) : basic_text_exception{e.what()} {}
+
         basic_text_exception(const basic_text_exception &) = default;
         basic_text_exception(basic_text_exception &&) = default;
-        explicit basic_text_exception(const string_type &text);
-        explicit basic_text_exception(string_type &&text);
-        explicit basic_text_exception(const std::exception &e);
 
         virtual ~basic_text_exception() noexcept override = default;
 
         basic_text_exception &operator=(const basic_text_exception &) = default;
         basic_text_exception &operator=(basic_text_exception &&) = default;
 
-        virtual const char *what() const noexcept override;
+        virtual const char *what() const noexcept override { return m_text.c_str(); }
 
     protected:
         string_type m_text;
     };
-
-    template <class string_type_template>
-    inline basic_text_exception<string_type_template>::basic_text_exception() : basic_text_exception{"tractor::basic_text_exception"}
-    {
-    }
-
-    template <class string_type_template>
-    inline basic_text_exception<string_type_template>::basic_text_exception(const string_type &text) : m_text{text}
-    {
-    }
-
-    template <class string_type_template>
-    inline basic_text_exception<string_type_template>::basic_text_exception(string_type &&text) : m_text{std::move(text)}
-    {
-    }
-
-    template <class string_type_template>
-    inline basic_text_exception<string_type_template>::basic_text_exception(const std::exception &e) : basic_text_exception{e.what()}
-    {
-    }
-
-    template <class string_type_template>
-    inline const char *basic_text_exception<string_type_template>::what() const noexcept
-    {
-        return m_text.c_str();
-    }
 
     template <class traits_type_template = std::char_traits<char>, class allocator_type_template = std::allocator<char>>
     using text_exception_basic_string_char = basic_text_exception<std::basic_string<char, traits_type_template, allocator_type_template>>;
@@ -94,7 +70,7 @@ namespace tractor
 } // namespace tractor
 
 // template struct numeric_code_translator;
-// using using int_code_translator;
+// using int_code_translator;
 namespace tractor
 {
     template <class code_type_template>
@@ -106,15 +82,9 @@ namespace tractor
 
         static_assert(std::is_same<typename string_type::value_type, char>::value, "the 'value_type' of 'string_type' is not 'char'");
 
-        string_type translate(code_type code) const;
+    public:
+        string_type translate(code_type code) const { return std::to_string(code); }
     };
-
-    template <class code_type_template>
-    inline auto numeric_code_translator<code_type_template>::translate(code_type code) const
-        -> typename numeric_code_translator<code_type_template>::string_type
-    {
-        return std::to_string(code);
-    }
 
     using int_code_translator = numeric_code_translator<int>;
 } // namespace tractor
@@ -131,15 +101,9 @@ namespace tractor
         using code_type = int;
         using string_type = string_type_template;
 
-        string_type translate(code_type code) const;
+    public:
+        string_type translate(code_type code) const { return string_type{std::strerror(code)}; }
     };
-
-    template <class string_type_template>
-    inline auto basic_errno_code_translator<string_type_template>::translate(code_type code) const
-        -> typename basic_errno_code_translator<string_type_template>::string_type
-    {
-        return string_type{std::strerror(code)};
-    }
 
     template <class traits_type_template = std::char_traits<char>, class allocator_type_template = std::allocator<char>>
     using errno_code_translator_basic_string_char = basic_errno_code_translator<std::basic_string<char, traits_type_template, allocator_type_template>>;
@@ -153,60 +117,38 @@ namespace tractor
 namespace tractor
 {
     template <class code_translator_type_template>
-    class basic_code_exception : public exception_base
+    class basic_code_exception : public basic_text_exception<typename code_translator_type_template::string_type>
     {
     public:
-        using code_type = typename code_translator_type_template::code_type;
-        using string_type = typename code_translator_type_template::string_type;
+        using code_translator_type = code_translator_type_template;
+        using code_type = typename code_translator_type::code_type;
 
-        basic_code_exception(const code_translator_type_template &code_translator = code_translator_type_template{});
+    private:
+        using parent_type = basic_text_exception<typename code_translator_type::string_type>;
+
+    public:
+        basic_code_exception() : basic_code_exception(code_type{}, code_translator_type{}) {}
+        explicit basic_code_exception(const code_type &code) : basic_code_exception(code, code_translator_type{}) {}
+        explicit basic_code_exception(code_type &&code) : basic_code_exception(std::move(code), code_translator_type{}) {}
+        explicit basic_code_exception(const code_translator_type_template &code_translator) : basic_code_exception(code_type{}, code_translator) {}
+        basic_code_exception(const code_type &code, const code_translator_type_template &code_translator)
+            : parent_type{code_translator.translate(code)}, m_code{code} {}
+        basic_code_exception(code_type &&code, const code_translator_type_template &code_translator)
+            : parent_type{code_translator.translate(code)}, m_code{std::move(code)} {}
+
         basic_code_exception(const basic_code_exception &other) = default;
         basic_code_exception(basic_code_exception &&other) = default;
-        explicit basic_code_exception(const code_type &code, const code_translator_type_template &code_translator = code_translator_type_template{});
-        explicit basic_code_exception(code_type &&code, const code_translator_type_template &code_translator = code_translator_type_template{});
 
         virtual ~basic_code_exception() noexcept override = default;
 
         basic_code_exception &operator=(const basic_code_exception &) = default;
         basic_code_exception &operator=(basic_code_exception &&) = default;
 
-        virtual const char *what() const noexcept override;
-        virtual const code_type &code() const noexcept;
+        virtual const code_type &code() const noexcept { return m_code; }
 
     protected:
         code_type m_code;
-        string_type m_text;
     };
-
-    template <class code_translator_type_template>
-    inline basic_code_exception<code_translator_type_template>::basic_code_exception(const code_translator_type_template &code_translator) : basic_code_exception{code_type{}, code_translator}
-    {
-    }
-
-    template <class code_translator_type_template>
-    inline basic_code_exception<code_translator_type_template>::basic_code_exception(const code_type &code, const code_translator_type_template &code_translator) : m_code{code},
-                                                                                                                                                                    m_text{code_translator.translate(m_code)}
-    {
-    }
-
-    template <class code_translator_type_template>
-    inline basic_code_exception<code_translator_type_template>::basic_code_exception(code_type &&code, const code_translator_type_template &code_translator) : m_code{std::move(code)},
-                                                                                                                                                               m_text{code_translator.translate(m_code)}
-    {
-    }
-
-    template <class code_translator_type_template>
-    inline const char *basic_code_exception<code_translator_type_template>::what() const noexcept
-    {
-        return m_text.c_str();
-    }
-
-    template <class code_translator_type_template>
-    inline auto basic_code_exception<code_translator_type_template>::code() const noexcept
-        -> const code_type &
-    {
-        return m_code;
-    }
 
     template <class code_type_template>
     using numeric_code_exception = basic_code_exception<numeric_code_translator<code_type_template>>;
