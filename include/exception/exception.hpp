@@ -137,11 +137,11 @@ namespace tractor
     class basic_code_exception : public basic_text_exception<typename code_translator_type_template::string_type>
     {
     public:
-        using code_translator_type = code_translator_type_template;
-        using code_type = typename code_translator_type::code_type;
-
         using parent_type = basic_text_exception<typename code_translator_type_template::string_type>;
         using typename parent_type::string_type;
+
+        using code_translator_type = code_translator_type_template;
+        using code_type = typename code_translator_type::code_type;
 
     public:
         basic_code_exception() : basic_code_exception(code_type{}, code_translator_type{}) {}
