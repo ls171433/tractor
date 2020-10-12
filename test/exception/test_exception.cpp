@@ -168,4 +168,4 @@ struct test_exception : test_module
     }
 };
 
-test_exception g_test_exception;
+static test_exception s_test;
