@@ -24,6 +24,7 @@ int main()
             {
                 std::printf("caught an exception: %s\n", e.what());
                 std::fflush(stdout);
+                return -1;
             }
         }
     }
