@@ -22,13 +22,8 @@ namespace tractor
     class exception_base : public std::exception
     {
     public:
-        virtual const char *what() const noexcept override;
+        virtual const char *what() const noexcept override { return "tractor::exception_base"; }
     };
-
-    inline const char *exception_base::what() const noexcept
-    {
-        return "tractor::exception_base";
-    }
 } // namespace tractor
 
 // template class basic_text_exception;
