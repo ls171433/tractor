@@ -75,10 +75,10 @@ $(BUILD_DIR)/%.o: %.cxx
 
 
 $(EXEC_NAME): $(OBJS)
-	$(LD) $(LDFLAGS) $^ -o $@
+	$(LD) $^ $(LDFLAGS) -o $@
 
 $(SHARED_NAME): $(OBJS)
-	$(LD) -shared $(LDFLAGS) $^ -o $@
+	$(LD) -shared $^ $(LDFLAGS) -o $@
 
 $(STATIC_NAME): $(OBJS)
 	$(AR) rcs $@ $^
