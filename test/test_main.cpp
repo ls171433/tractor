@@ -10,7 +10,7 @@ int test_module::s_test_module_count = 0;
 int g_succeed = 0;
 int g_failed = 0;
 
-int main()
+int main2()
 {
     for (test_module_ptr current_test_module_ptr : test_module::s_test_module_list)
     {
@@ -31,4 +31,6 @@ int main()
 
     std::printf("total succeed: %d, failed: %d\n", g_succeed, g_failed);
     std::fflush(stdout);
+
+    return 0;
 }

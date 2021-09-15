@@ -12,7 +12,7 @@ LD:=$(CXX)
 AR:=ar
 
 CXXFLAGS:=-std=c++11 -Wall -Iinclude -Itest
-LDFLAGS:=
+LDFLAGS:=-lgtest -lgtest_main
 
 SRCS:=$(shell find test -name "*.cpp" -or -name "*.cc" -or -name "*.cxx")
 TEMP:=$(SRCS)
