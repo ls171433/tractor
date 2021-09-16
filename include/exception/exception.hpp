@@ -40,10 +40,10 @@ namespace tractor
         static_assert(std::is_same<typename string_type::value_type, char>::value, "the 'value_type' of 'string_type' is not 'char'");
 
     public:
-        basic_text_exception() : basic_text_exception{"tractor::basic_text_exception"} {}
-        explicit basic_text_exception(const string_type &text) : m_text{text} {}
-        explicit basic_text_exception(string_type &&text) : m_text{std::move(text)} {}
-        explicit basic_text_exception(const std::exception &e) : basic_text_exception{e.what()} {}
+        basic_text_exception() : basic_text_exception("tractor::basic_text_exception") {}
+        explicit basic_text_exception(const string_type &text) : m_text(text) {}
+        explicit basic_text_exception(string_type &&text) : m_text(std::move(text)) {}
+        explicit basic_text_exception(const std::exception &e) : basic_text_exception(e.what()) {}
 
         basic_text_exception(const basic_text_exception &) = default;
         basic_text_exception(basic_text_exception &&) = default;
@@ -77,7 +77,7 @@ namespace tractor
         static_assert(std::is_same<typename string_type::value_type, char>::value, "the 'value_type' of 'string_type' is not 'char'");
 
     public:
-        virtual string_type translate(const code_type &code) const { return string_type{"tractor::basic_code_translator"}; }
+        virtual string_type translate(const code_type &code) const { return string_type("tractor::basic_code_translator"); }
     };
 } // namespace tractor
 
@@ -114,7 +114,7 @@ namespace tractor
         using typename parent_type::string_type;
 
     public:
-        virtual string_type translate(const code_type &code) const override { return string_type{std::strerror(code)}; }
+        virtual string_type translate(const code_type &code) const override { return string_type(std::strerror(code)); }
     };
 
     template <class traits_type_template = std::char_traits<char>, class allocator_type_template = std::allocator<char>>
@@ -139,14 +139,14 @@ namespace tractor
         using code_type = typename code_translator_type::code_type;
 
     public:
-        basic_code_exception() : basic_code_exception(code_type{}, code_translator_type{}) {}
-        explicit basic_code_exception(const code_type &code) : basic_code_exception(code, code_translator_type{}) {}
-        explicit basic_code_exception(code_type &&code) : basic_code_exception(std::move(code), code_translator_type{}) {}
-        explicit basic_code_exception(const code_translator_type_template &code_translator) : basic_code_exception(code_type{}, code_translator) {}
+        basic_code_exception() : basic_code_exception(code_type(), code_translator_type()) {}
+        explicit basic_code_exception(const code_type &code) : basic_code_exception(code, code_translator_type()) {}
+        explicit basic_code_exception(code_type &&code) : basic_code_exception(std::move(code), code_translator_type()) {}
+        explicit basic_code_exception(const code_translator_type_template &code_translator) : basic_code_exception(code_type(), code_translator) {}
         basic_code_exception(const code_type &code, const code_translator_type_template &code_translator)
-            : parent_type{code_translator.translate(code)}, m_code{code} {}
+            : parent_type(code_translator.translate(code)), m_code(code) {}
         basic_code_exception(code_type &&code, const code_translator_type_template &code_translator)
-            : parent_type{code_translator.translate(code)}, m_code{std::move(code)} {}
+            : parent_type(code_translator.translate(code)), m_code(std::move(code)) {}
 
         basic_code_exception(const basic_code_exception &other) = default;
         basic_code_exception(basic_code_exception &&other) = default;

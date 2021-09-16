@@ -40,7 +40,7 @@ namespace tractor
         {
             if (count > static_max_size())
             {
-                throw std::length_error{"'count' too large"};
+                throw std::length_error("'count' too large");
             }
 
             for (size_type i = size_type(); i < count; ++i)
@@ -87,7 +87,7 @@ namespace tractor
         {
             if (count > static_max_size())
             {
-                throw std::length_error{"'count' too large"};
+                throw std::length_error("'count' too large");
             }
 
             for (size_type i = size_type(); i < count; ++i)
@@ -105,7 +105,7 @@ namespace tractor
             {
                 if (!(real_count < static_max_size()))
                 {
-                    throw std::length_error{"input size too large"};
+                    throw std::length_error("input size too large");
                 }
 
                 m_array[real_count] = *current;
@@ -124,7 +124,7 @@ namespace tractor
             {
                 if (!(real_count < static_max_size()))
                 {
-                    throw std::length_error{"input size too large"};
+                    throw std::length_error("input size too large");
                 }
 
                 m_array[real_count] = *current;
@@ -140,7 +140,7 @@ namespace tractor
             size_type count = ilist.size();
             if (count > static_max_size())
             {
-                throw std::length_error{"input size too large"};
+                throw std::length_error("input size too large");
             }
 
             size_type real_count = size_type();
