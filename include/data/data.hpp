@@ -34,7 +34,7 @@ namespace tractor
         template <class arithmetic_type, class enable = typename std::enable_if<std::is_arithmetic<arithmetic_type>::value>::type>
         data &operator=(const arithmetic_type &value)
         {
-            const byte *value_raw_data = &value;
+            const byte *value_raw_data = reinterpret_cast<const byte *>(&value);
             m_internal_data.resize(sizeof(arithmetic_type));
 
             for (size i = 0; i < m_internal_data.size(); ++i)
@@ -43,6 +43,20 @@ namespace tractor
             }
 
             return *this;
+        }
+
+        template <class arithmetic_type, class enable = typename std::enable_if<std::is_arithmetic<arithmetic_type>::value>::type>
+        operator arithmetic_type() const
+        {
+            arithmetic_type value;
+            byte *value_raw_data = reinterpret_cast<byte *>(&value);
+
+            for (size i = 0; i < m_internal_data.size(); ++i)
+            {
+                value_raw_data[i] = m_internal_data[i];
+            }
+
+            return value;
         }
 
         data reverse() const
