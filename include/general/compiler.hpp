@@ -1,18 +1,15 @@
 #pragma once
 
-#define TRACTOR_IS_MSVC 0
-#define TRACTOR_IS_GCC 0
-#define TRACTOR_IS_CLANG 0
+#undef TRACTOR_COMPILER_MSVC
+#undef TRACTOR_COMPILER_GCC
+#undef TRACTOR_COMPILER_CLANG
 
 #if defined _MSC_VER
-#undef TRACTOR_IS_MSVC
-#define TRACTOR_IS_MSVC 1
+#define TRACTOR_COMPILER_MSVC 1
 #elif defined __GNUC__ && !defined __clang__
-#undef TRACTOR_IS_GCC
-#define TRACTOR_IS_GCC 1
+#define TRACTOR_COMPILER_GCC 1
 #elif defined __GNUC__ && defined __clang__
-#undef TRACTOR_IS_CLANG
-#define TRACTOR_IS_CLANG 1
+#define TRACTOR_COMPILER_CLANG 1
 #endif
 
 namespace tractor
@@ -22,11 +19,11 @@ namespace tractor
         msvc,
         gcc,
         clang,
-#if TRACTOR_IS_MSVC
+#if defined TRACTOR_COMPILER_MSVC
         native = msvc,
-#elif TRACTOR_IS_GCC
+#elif defined TRACTOR_COMPILER_GCC
         native = gcc,
-#elif TRACTOR_IS_CLANG
+#elif defined TRACTOR_COMPILER_CLANG
         native = clang,
 #else
         native,

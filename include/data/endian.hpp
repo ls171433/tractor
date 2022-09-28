@@ -3,19 +3,17 @@
 #include "general/compiler.hpp"
 #include "data/data.hpp"
 
-#define TRACTOR_IS_LITTLE_ENDIAN 0
-#define TRACTOR_IS_BIG_ENDIAN 0
+#undef TRACTOR_ENDIAN_LITTLE
+#undef TRACTOR_ENDIAN_BIG
+#undef TRACTOR_ENDIAN_PDP
 
-#if TRACTOR_IS_MSVC
-#undef TRACTOR_IS_LITTLE_ENDIAN
-#define TRACTOR_IS_LITTLE_ENDIAN 1
-#elif TRACTOR_IS_GCC || TRACTOR_IS_CLANG
+#if defined TRACTOR_COMPILER_MSVC
+#define TRACTOR_ENDIAN_LITTLE 1
+#elif defined TRACTOR_COMPILER_GCC || defined TRACTOR_COMPILER_CLANG
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-#undef TRACTOR_IS_LITTLE_ENDIAN
-#define TRACTOR_IS_LITTLE_ENDIAN 1
+#define TRACTOR_ENDIAN_LITTLE 1
 #elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-#undef TRACTOR_IS_BIG_ENDIAN
-#define TRACTOR_IS_BIG_ENDIAN 1
+#define TRACTOR_ENDIAN_BIG 1
 #endif
 #endif
 
@@ -26,20 +24,25 @@ namespace tractor
     {
         little,
         big,
-#if TRACTOR_IS_LITTLE_ENDIAN
+        pdp,
+#if TRACTOR_ENDIAN_LITTLE
         native = little,
-#elif TRACTOR_IS_BIG_ENDIAN
+#elif TRACTOR_ENDIAN_BIG
         native = big,
+#elif TRACTOR_ENDIAN_PDP
+        native = pdp,
 #else
         native,
 #endif
     };
 
-    constexpr bool is_little_endian_v = endian::native == endian::little;
-    constexpr bool is_big_endian_v = endian::native == endian::big;
+    constexpr bool is_endian_little_v = endian::native == endian::little;
+    constexpr bool is_endian_big_v = endian::native == endian::big;
+    constexpr bool is_endian_pdp_v = endian::native == endian::pdp;
 
-    constexpr bool is_little_endian() { return is_little_endian_v; }
-    constexpr bool is_big_endian() { return is_big_endian_v; }
+    constexpr bool is_endian_little() { return is_endian_little_v; }
+    constexpr bool is_endian_big() { return is_endian_big_v; }
+    constexpr bool is_endian_pdp() { return is_endian_pdp_v; }
 } // namespace tractor
 
 namespace tractor
