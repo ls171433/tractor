@@ -18,6 +18,6 @@ namespace
 {
     TEST(test_endian, general)
     {
-        EXPECT_TRUE(is_little_endian());
+        EXPECT_TRUE(is_endian_little());
     }
 } // namespace
