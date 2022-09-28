@@ -7,7 +7,7 @@ else
     OS_NAME:=unix
 endif
 
-CXX:=g++
+CXX:=c++
 LD:=$(CXX)
 AR:=ar
 
