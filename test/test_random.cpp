@@ -1,6 +1,6 @@
 #include "math/random.hpp"
 
-#include "type/basic_types.hpp"
+#include "type/types.hpp"
 
 #include <gtest/gtest.h>
 
@@ -14,8 +14,8 @@ namespace
 
     TEST_F(test_random, rate)
     {
-        int_random_base<unsigned long long> my_int_random_1;
-        int_random_base<unsigned long long> my_int_random_2;
+        int_random_base<tuint64> my_int_random_1;
+        int_random_base<tuint64> my_int_random_2;
 
         EXPECT_NE(my_int_random_1.get(), my_int_random_2.get());
 
