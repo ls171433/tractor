@@ -37,7 +37,7 @@ namespace tractor
     public:
         using string_type = string_type_template;
 
-        static_assert(std::is_same<typename string_type::value_type, char>::value, "the 'value_type' of 'string_type' is not 'char'");
+        static_assert(std::is_same_v<typename string_type::value_type, char>, "the 'value_type' of 'string_type' is not 'char'");
 
     public:
         basic_text_exception() : basic_text_exception("tractor::basic_text_exception") {}
@@ -74,7 +74,7 @@ namespace tractor
         using code_type = code_type_template;
         using string_type = string_type_template;
 
-        static_assert(std::is_same<typename string_type::value_type, char>::value, "the 'value_type' of 'string_type' is not 'char'");
+        static_assert(std::is_same_v<typename string_type::value_type, char>, "the 'value_type' of 'string_type' is not 'char'");
 
     public:
         virtual string_type translate(const code_type &code) const { return string_type("tractor::basic_code_translator"); }

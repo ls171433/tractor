@@ -11,7 +11,7 @@ CXX:=g++
 LD:=$(CXX)
 AR:=ar
 
-CXXFLAGS:=-std=c++11 -Wall -Iinclude -Itest
+CXXFLAGS:=-std=c++17 -Wall -Iinclude -Itest
 LDFLAGS:=-lgtest -lgtest_main
 
 SRCS:=$(shell find test -name "*.cpp" -or -name "*.cc" -or -name "*.cxx")

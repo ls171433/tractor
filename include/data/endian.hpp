@@ -44,7 +44,7 @@ namespace tractor
 
 namespace tractor
 {
-    template <class arithmetic_type, class enable = typename std::enable_if<std::is_arithmetic<arithmetic_type>::value>::type>
+    template <class arithmetic_type, class enable = typename std::enable_if_t<std::is_arithmetic_v<arithmetic_type>>>
     data to_endian(const arithmetic_type &arithmetic_value, endian current_endian)
     {
         data arithmetic_data = arithmetic_value;
@@ -57,7 +57,7 @@ namespace tractor
         return arithmetic_data;
     }
 
-    template <class arithmetic_type, class enable = typename std::enable_if<std::is_arithmetic<arithmetic_type>::value>::type>
+    template <class arithmetic_type, class enable = typename std::enable_if_t<std::is_arithmetic_v<arithmetic_type>>>
     arithmetic_type from_endian(const data &arithmetic_data, endian current_endian)
     {
         if (current_endian == endian::native)

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "type/basic_types.hpp"
+#include "type/types.hpp"
 
 #include <utility>
 #include <vector>
@@ -11,7 +11,7 @@
 // struct data
 namespace tractor
 {
-    constexpr size char_bit = CHAR_BIT;
+    constexpr tsize char_bit = CHAR_BIT;
 
     struct data final
     {
@@ -20,7 +20,7 @@ namespace tractor
         data(const data &) = default;
         data(data &&) = default;
 
-        template <class arithmetic_type, class enable = typename std::enable_if<std::is_arithmetic<arithmetic_type>::value>::type>
+        template <class arithmetic_type, class enable = typename std::enable_if_t<std::is_arithmetic_v<arithmetic_type>>>
         data(const arithmetic_type &value)
         {
             *this = value;
@@ -31,13 +31,13 @@ namespace tractor
         data &operator=(const data &) = default;
         data &operator=(data &&) = default;
 
-        template <class arithmetic_type, class enable = typename std::enable_if<std::is_arithmetic<arithmetic_type>::value>::type>
+        template <class arithmetic_type, class enable = typename std::enable_if_t<std::is_arithmetic_v<arithmetic_type>>>
         data &operator=(const arithmetic_type &value)
         {
-            const byte *value_raw_data = reinterpret_cast<const byte *>(&value);
+            const tbyte *value_raw_data = reinterpret_cast<const tbyte *>(&value);
             m_internal_data.resize(sizeof(arithmetic_type));
 
-            for (size i = 0; i < m_internal_data.size(); ++i)
+            for (tsize i = 0; i < m_internal_data.size(); ++i)
             {
                 m_internal_data[i] = value_raw_data[i];
             }
@@ -64,7 +64,7 @@ namespace tractor
             data new_data;
             new_data.m_internal_data.resize(m_internal_data.size());
 
-            for (size i = 0; i < m_internal_data.size(); ++i)
+            for (tsize i = 0; i < m_internal_data.size(); ++i)
             {
                 new_data.m_internal_data[i] = m_internal_data[m_internal_data.size() - 1 - i];
             }
@@ -74,13 +74,13 @@ namespace tractor
 
         void reverse_inplace()
         {
-            for (size i = 0; i * 2 < m_internal_data.size(); ++i)
+            for (tsize i = 0; i * 2 < m_internal_data.size(); ++i)
             {
                 std::swap(m_internal_data[i], m_internal_data[m_internal_data.size() - 1 - i]);
             }
         }
 
     public:
-        std::vector<byte> m_internal_data;
+        std::vector<tbyte> m_internal_data;
     };
 } // namespace tractor
