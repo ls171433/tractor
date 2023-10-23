@@ -33,4 +33,5 @@
 
 # Other
 build-*
+tractor-test
 .vscode

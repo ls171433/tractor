@@ -1,8 +1,10 @@
-MODULE_NAME:=tractor-test
-BUILD_DIR=build-$(MODULE_NAME)
+MODULE_NAME := tractor-test
+BUILD_DIR = build-$(MODULE_NAME)
 
 ifeq ("x$(shell uname -o 2>/dev/null)","xMsys")
     OS_NAME:=windows
+else ifeq ("x$(shell uname -o 2>/dev/null)","xDarwin")
+    OS_NAME:=macos
 else
     OS_NAME:=unix
 endif
@@ -14,18 +16,21 @@ AR:=ar
 CXXFLAGS:=-std=c++17 -Wall -Iinclude -Itest
 LDFLAGS:=-lgtest -lgtest_main
 
-SRCS:=$(shell find test -name "*.cpp" -or -name "*.cc" -or -name "*.cxx")
-TEMP:=$(SRCS)
-TEMP:=$(TEMP:%.cpp=%.temp)
-TEMP:=$(TEMP:%.cc=%.temp)
-TEMP:=$(TEMP:%.cxx=%.temp)
-OBJS:=$(TEMP:%.temp=$(BUILD_DIR)/%.o)
-DEPS:=$(TEMP:%.temp=$(BUILD_DIR)/%.d)
+SRCS:=$(shell find test -name "*.cpp")
+OBJS:=$(patsubst %.cpp,$(BUILD_DIR)/%.o,$(SRCS))
+DEPS:=$(patsubst %.cpp,$(BUILD_DIR)/%.d,$(SRCS))
 
 ifeq ("x$(OS_NAME)","xwindows")
     EXEC_NAME:=$(MODULE_NAME).exe
     SHARED_NAME:=lib$(MODULE_NAME).dll
     STATIC_NAME:=lib$(MODULE_NAME).lib
+else ifeq ("x$(OS_NAME)","xmacos")
+    CXXFLAGS:=$(CXXFLAGS) -I/opt/homebrew/include
+    LDFLAGS:=-L/opt/homebrew/lib $(LDFLAGS)
+
+    EXEC_NAME:=$(MODULE_NAME)
+    SHARED_NAME:=lib$(MODULE_NAME).dylib
+    STATIC_NAME:=lib$(MODULE_NAME).a
 else
     EXEC_NAME:=$(MODULE_NAME)
     SHARED_NAME:=lib$(MODULE_NAME).so

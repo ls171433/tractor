@@ -37,4 +37,6 @@ namespace tractor
     constexpr bool is_msvc() { return is_msvc_v; }
     constexpr bool is_gcc() { return is_gcc_v; }
     constexpr bool is_clang() { return is_clang_v; }
+
+    constexpr bool is_compiler(compiler c) { return c == compiler::native; }
 } // namespace tractor

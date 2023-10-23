@@ -10,27 +10,41 @@ namespace
 {
     TEST(test_compiler, macro)
     {
-#if !defined TRACTOR_COMPILER_MSVC && !defined TRACTOR_COMPILER_GCC && !defined TRACTOR_COMPILER_CLANG
-        FAIL();
-#elif defined TRACTOR_COMPILER_MSVC && !defined TRACTOR_COMPILER_GCC && !defined TRACTOR_COMPILER_CLANG
-#elif !defined TRACTOR_COMPILER_MSVC && defined TRACTOR_COMPILER_GCC && !defined TRACTOR_COMPILER_CLANG
-#elif !defined TRACTOR_COMPILER_MSVC && !defined TRACTOR_COMPILER_GCC && defined TRACTOR_COMPILER_CLANG
-#else
-        FAIL();
+        int count = 0;
+
+#if defined(TRACTOR_COMPILER_MSVC)
+        ++count;
 #endif
+#if defined(TRACTOR_COMPILER_GCC)
+        ++count;
+#endif
+#if defined(TRACTOR_COMPILER_CLANG)
+        ++count;
+#endif
+
+        EXPECT_EQ(count, 1);
     }
 
     TEST(test_os, macro)
     {
-#if !defined TRACTOR_OS_WINDOWS && !defined TRACTOR_OS_LINUX && !defined TRACTOR_OS_MACOS && !defined TRACTOR_OS_ANDROID && !defined TRACTOR_OS_IOS
-        FAIL();
-#elif defined TRACTOR_OS_WINDOWS && !defined TRACTOR_OS_LINUX && !defined TRACTOR_OS_MACOS && !defined TRACTOR_OS_ANDROID && !defined TRACTOR_OS_IOS
-#elif !defined TRACTOR_OS_WINDOWS && defined TRACTOR_OS_LINUX && !defined TRACTOR_OS_MACOS && !defined TRACTOR_OS_ANDROID && !defined TRACTOR_OS_IOS
-#elif !defined TRACTOR_OS_WINDOWS && !defined TRACTOR_OS_LINUX && defined TRACTOR_OS_MACOS && !defined TRACTOR_OS_ANDROID && !defined TRACTOR_OS_IOS
-#elif !defined TRACTOR_OS_WINDOWS && !defined TRACTOR_OS_LINUX && !defined TRACTOR_OS_MACOS && defined TRACTOR_OS_ANDROID && !defined TRACTOR_OS_IOS
-#elif !defined TRACTOR_OS_WINDOWS && !defined TRACTOR_OS_LINUX && !defined TRACTOR_OS_MACOS && !defined TRACTOR_OS_ANDROID && defined TRACTOR_OS_IOS
-#else
-        FAIL();
+        int count = 0;
+
+#if defined(TRACTOR_OS_WINDOWS)
+        ++count;
 #endif
+#if defined(TRACTOR_OS_LINUX)
+        ++count;
+#endif
+#if defined(TRACTOR_OS_MACOS)
+        ++count;
+#endif
+#if defined(TRACTOR_OS_ANDROID)
+        ++count;
+#endif
+#if defined(TRACTOR_OS_IOS)
+        ++count;
+#endif
+
+        EXPECT_EQ(count, 1);
     }
 } // namespace
