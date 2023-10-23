@@ -8,8 +8,10 @@
 
 #if defined _WIN32
 #define TRACTOR_OS_WINDOWS 1
-#elif defined __linux__ && undefined __ANDROID__
+#elif defined(__linux__) && !defined(__ANDROID__)
 #define TRACTOR_OS_LINUX 1
+#elif defined(__APPLE__)
+#define TRACTOR_OS_MACOS 1
 #endif
 
 namespace tractor
@@ -47,4 +49,6 @@ namespace tractor
     constexpr bool is_macos() { return is_macos_v; }
     constexpr bool is_android() { return is_android_v; }
     constexpr bool is_ios() { return is_ios_v; }
+
+    constexpr bool is_os(os o) { return o == os::native; }
 } // namespace tractor
