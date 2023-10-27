@@ -7,6 +7,9 @@
 // for std::vector
 #include <vector>
 
+// for CHAR_BIT
+#include <climits>
+
 // struct data
 namespace tractor
 {
