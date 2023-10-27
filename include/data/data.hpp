@@ -2,11 +2,10 @@
 
 #include "type/types.hpp"
 
+// for std::swap
 #include <utility>
+// for std::vector
 #include <vector>
-
-#include <climits>
-#include <cstring>
 
 // struct data
 namespace tractor
@@ -20,7 +19,7 @@ namespace tractor
         data(const data &) = default;
         data(data &&) = default;
 
-        template <class arithmetic_type, class enable = typename std::enable_if_t<std::is_arithmetic_v<arithmetic_type>>>
+        template <class arithmetic_type, class enable = enable_if_basic_t<arithmetic_type>>
         data(const arithmetic_type &value)
         {
             *this = value;
@@ -31,7 +30,7 @@ namespace tractor
         data &operator=(const data &) = default;
         data &operator=(data &&) = default;
 
-        template <class arithmetic_type, class enable = typename std::enable_if_t<std::is_arithmetic_v<arithmetic_type>>>
+        template <class arithmetic_type, class enable = enable_if_basic_t<arithmetic_type>>
         data &operator=(const arithmetic_type &value)
         {
             const tbyte *value_raw_data = &value;

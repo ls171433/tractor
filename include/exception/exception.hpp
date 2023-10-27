@@ -1,5 +1,4 @@
-#if !defined TRACTOR_EXCEPTION_EXCEPTION_HPP
-#define TRACTOR_EXCEPTION_EXCEPTION_HPP
+#pragma once
 
 // for std::exception
 #include <exception>
@@ -10,6 +9,8 @@
 // for std::string
 // for std::to_string
 #include <string>
+// for std::is_same_v
+#include <type_traits>
 // for std::move
 #include <utility>
 
@@ -167,5 +168,3 @@ namespace tractor
     using int_code_exception = numeric_code_exception<int>;
     using errno_code_exception = basic_code_exception<errno_code_translator>;
 } // namespace tractor
-
-#endif // !defined TRACTOR_EXCEPTION_EXCEPTION_HPP

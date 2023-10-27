@@ -1,16 +1,20 @@
-#if !defined TRACTOR_STRING_FAST_STRING_HPP
-#define TRACTOR_STRING_FAST_STRING_HPP
+#pragma once
 
+#include "type/types.hpp"
+
+// for std::array
 #include <array>
+// for std::initializer_list
+#include <initializer_list>
+// for std::length_error
+// for std::out_of_range
 #include <stdexcept>
-// for std::string
+// for std::char_traits
 #include <string>
-// for std::allocator
-#include <memory>
 
 namespace tractor
 {
-    template <class char_type_template, size_t max_size_template, class traits_type_template = std::char_traits<char_type_template>>
+    template <class char_type_template, tsize max_size_template, class traits_type_template = std::char_traits<char_type_template>>
     class basic_stack_string
     {
     public:
@@ -18,8 +22,8 @@ namespace tractor
         using array_type = std::array<char_type, max_size_template + 1>;
 
         using value_type = char_type;
-        using size_type = std::size_t;
-        using difference_type = std::ptrdiff_t;
+        using size_type = tsize;
+        using difference_type = tssize;
         using reference = value_type &;
         using const_reference = const value_type &;
         using pointer = value_type *;
@@ -246,8 +250,6 @@ namespace tractor
         size_type m_size;
     };
 
-    template <size_t array_size>
+    template <tsize array_size>
     using stack_string = basic_stack_string<char, array_size>;
 } // namespace tractor
-
-#endif // !defined TRACTOR_STRING_FAST_STRING_HPP
