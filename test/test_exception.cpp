@@ -14,7 +14,7 @@ namespace
     class test_text_exception : public testing::Test
     {
     protected:
-        const char *m_text = "gbhjkgbdjs";
+        const tchar *m_text = "gbhjkgbdjs";
         std::string m_text_string = m_text;
         text_exception m_exception = text_exception(m_text);
     };

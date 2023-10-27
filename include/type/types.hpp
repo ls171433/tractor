@@ -18,6 +18,8 @@
 // using tdouble
 namespace tractor
 {
+    using tchar = char;
+
     using tint8 = signed char;
     using tint16 = short;
     using tint32 = int;
@@ -131,6 +133,11 @@ namespace tractor
 
     template <class type>
     struct is_basic_integral : public std::integral_constant<bool, is_basic_signed<type>::value || is_basic_unsigned<type>::value>
+    {
+    };
+
+    template <>
+    struct is_basic_integral<tchar> : std::true_type
     {
     };
 

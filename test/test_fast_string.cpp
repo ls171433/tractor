@@ -14,7 +14,7 @@ namespace
     class test_fast_string : public testing::Test
     {
     protected:
-        static constexpr const char *m_string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        static constexpr const tchar *m_string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         const my_string m_my = m_string;
         const cp_string m_cp = m_string;
 
