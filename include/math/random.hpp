@@ -3,12 +3,14 @@
 #include "type/types.hpp"
 #include "type/type_utilities.hpp"
 
+// for std::mt19937
+// for std::random_device
+// for std::uniform_int_distribution
 #include <random>
-#include <type_traits>
 
 namespace tractor
 {
-    template <class int_type_template, class enable = typename std::enable_if_t<std::is_integral_v<int_type_template>>>
+    template <class int_type_template, class enable = enable_if_basic_integral_t<int_type_template>>
     class int_random_base final
     {
     public:

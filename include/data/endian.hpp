@@ -1,7 +1,8 @@
 #pragma once
 
-#include "general/compiler.hpp"
 #include "data/data.hpp"
+#include "general/compiler.hpp"
+#include "type/types.hpp"
 
 #undef TRACTOR_ENDIAN_LITTLE
 #undef TRACTOR_ENDIAN_BIG
@@ -47,7 +48,7 @@ namespace tractor
 
 namespace tractor
 {
-    template <class arithmetic_type, class enable = typename std::enable_if_t<std::is_arithmetic_v<arithmetic_type>>>
+    template <class arithmetic_type, class enable = enable_if_basic_integral<arithmetic_type>>
     data to_endian(const arithmetic_type &arithmetic_value, endian current_endian)
     {
         data arithmetic_data = arithmetic_value;
@@ -60,7 +61,7 @@ namespace tractor
         return arithmetic_data;
     }
 
-    template <class arithmetic_type, class enable = typename std::enable_if_t<std::is_arithmetic_v<arithmetic_type>>>
+    template <class arithmetic_type, class enable = enable_if_basic_integral<arithmetic_type>>
     arithmetic_type from_endian(const data &arithmetic_data, endian current_endian)
     {
         if (current_endian == endian::native)

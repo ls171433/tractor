@@ -15,7 +15,9 @@ namespace
     {
         EXPECT_TRUE(std::is_signed_v<type>);
         EXPECT_TRUE(std::is_integral_v<type>);
-        EXPECT_TRUE(is_basic_type_value<type>);
+        EXPECT_TRUE(is_basic_v<type>);
+        EXPECT_TRUE(is_basic_integral_v<type>);
+        EXPECT_TRUE(is_basic_signed_v<type>);
         EXPECT_EQ(sizeof(type), size);
     }
 
@@ -24,7 +26,9 @@ namespace
     {
         EXPECT_TRUE(std::is_unsigned_v<type>);
         EXPECT_TRUE(std::is_integral_v<type>);
-        EXPECT_TRUE(is_basic_type_value<type>);
+        EXPECT_TRUE(is_basic_v<type>);
+        EXPECT_TRUE(is_basic_integral_v<type>);
+        EXPECT_TRUE(is_basic_unsigned_v<type>);
         EXPECT_EQ(sizeof(type), size);
     }
 
@@ -32,7 +36,8 @@ namespace
     void test_floating_point_types()
     {
         EXPECT_TRUE(std::is_floating_point_v<type>);
-        EXPECT_TRUE(is_basic_type_value<type>);
+        EXPECT_TRUE(is_basic_v<type>);
+        EXPECT_TRUE(is_basic_float_v<type>);
         EXPECT_EQ(sizeof(type), size);
     }
 

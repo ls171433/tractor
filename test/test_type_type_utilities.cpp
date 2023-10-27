@@ -9,16 +9,22 @@ using namespace tractor;
 // test_type.max_min
 namespace
 {
-    template<class type>
+    template <class type>
     void test_max_min()
     {
         EXPECT_GE(max_value<type>, min_value<type>);
 
+        EXPECT_GE(max_value<type>, static_cast<type>(0));
+        EXPECT_GE(max_value<type>, static_cast<type>(1));
+        EXPECT_GE(max_value<type>, static_cast<type>(-1));
         EXPECT_GE(max_value<type>, static_cast<type>(max_value<type> + 1));
         EXPECT_GE(max_value<type>, static_cast<type>(max_value<type> - 1));
         EXPECT_GE(max_value<type>, static_cast<type>(min_value<type> + 1));
         EXPECT_GE(max_value<type>, static_cast<type>(min_value<type> - 1));
 
+        EXPECT_LE(min_value<type>, static_cast<type>(0));
+        EXPECT_LE(min_value<type>, static_cast<type>(1));
+        EXPECT_LE(min_value<type>, static_cast<type>(-1));
         EXPECT_LE(min_value<type>, static_cast<type>(max_value<type> + 1));
         EXPECT_LE(min_value<type>, static_cast<type>(max_value<type> - 1));
         EXPECT_LE(min_value<type>, static_cast<type>(min_value<type> + 1));
