@@ -251,5 +251,5 @@ namespace tractor
     };
 
     template <tsize array_size>
-    using stack_string = basic_stack_string<char, array_size>;
+    using stack_string = basic_stack_string<tchar, array_size>;
 } // namespace tractor

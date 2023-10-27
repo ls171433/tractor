@@ -1,5 +1,7 @@
 #pragma once
 
+#include "type/types.hpp"
+
 // for std::exception
 #include <exception>
 // for std::allocator
@@ -23,12 +25,12 @@ namespace tractor
     class exception_base : public std::exception
     {
     public:
-        virtual const char *what() const noexcept override { return "tractor::exception_base"; }
+        virtual const tchar *what() const noexcept override { return "tractor::exception_base"; }
     };
 } // namespace tractor
 
 // template class basic_text_exception;
-// template using text_exception_basic_string_char;
+// template using text_exception_basic_string_tchar;
 // using text_exception;
 namespace tractor
 {
@@ -38,7 +40,7 @@ namespace tractor
     public:
         using string_type = string_type_template;
 
-        static_assert(std::is_same_v<typename string_type::value_type, char>, "the 'value_type' of 'string_type' is not 'char'");
+        static_assert(std::is_same_v<typename string_type::value_type, tchar>, "the 'value_type' of 'string_type' is not 'tchar'");
 
     public:
         basic_text_exception() : basic_text_exception("tractor::basic_text_exception") {}
@@ -54,14 +56,14 @@ namespace tractor
         basic_text_exception &operator=(const basic_text_exception &) = default;
         basic_text_exception &operator=(basic_text_exception &&) = default;
 
-        virtual const char *what() const noexcept override { return m_text.c_str(); }
+        virtual const tchar *what() const noexcept override { return m_text.c_str(); }
 
     protected:
         string_type m_text;
     };
 
-    template <class traits_type_template = std::char_traits<char>, class allocator_type_template = std::allocator<char>>
-    using text_exception_basic_string_char = basic_text_exception<std::basic_string<char, traits_type_template, allocator_type_template>>;
+    template <class traits_type_template = std::char_traits<tchar>, class allocator_type_template = std::allocator<tchar>>
+    using text_exception_basic_string_tchar = basic_text_exception<std::basic_string<tchar, traits_type_template, allocator_type_template>>;
     using text_exception = basic_text_exception<>;
 } // namespace tractor
 
@@ -75,7 +77,7 @@ namespace tractor
         using code_type = code_type_template;
         using string_type = string_type_template;
 
-        static_assert(std::is_same_v<typename string_type::value_type, char>, "the 'value_type' of 'string_type' is not 'char'");
+        static_assert(std::is_same_v<typename string_type::value_type, tchar>, "the 'value_type' of 'string_type' is not 'tchar'");
 
     public:
         virtual string_type translate(const code_type &code) const { return string_type("tractor::basic_code_translator"); }
@@ -102,7 +104,7 @@ namespace tractor
 } // namespace tractor
 
 // tempalte struct basic_errno_code_translator;
-// template using errno_code_translator_basic_string_char;
+// template using errno_code_translator_basic_string_tchar;
 // using errno_code_translator;
 namespace tractor
 {
@@ -118,8 +120,8 @@ namespace tractor
         virtual string_type translate(const code_type &code) const override { return string_type(std::strerror(code)); }
     };
 
-    template <class traits_type_template = std::char_traits<char>, class allocator_type_template = std::allocator<char>>
-    using errno_code_translator_basic_string_char = basic_errno_code_translator<std::basic_string<char, traits_type_template, allocator_type_template>>;
+    template <class traits_type_template = std::char_traits<tchar>, class allocator_type_template = std::allocator<tchar>>
+    using errno_code_translator_basic_string_tchar = basic_errno_code_translator<std::basic_string<tchar, traits_type_template, allocator_type_template>>;
     using errno_code_translator = basic_errno_code_translator<>;
 } // namespace tractor
 
