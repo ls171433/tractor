@@ -5,8 +5,10 @@ ifeq ("x$(shell uname -o 2>/dev/null)","xMsys")
     OS_NAME:=windows
 else ifeq ("x$(shell uname -o 2>/dev/null)","xDarwin")
     OS_NAME:=macos
+else ifeq ("x$(shell uname -o 2>/dev/null)","xGNU/Linux")
+    OS_NAME:=linux
 else
-    OS_NAME:=unix
+    OS_NAME:=unknown
 endif
 
 CXX:=g++
@@ -30,6 +32,12 @@ else ifeq ("x$(OS_NAME)","xmacos")
 
     EXEC_NAME:=$(MODULE_NAME)
     SHARED_NAME:=lib$(MODULE_NAME).dylib
+    STATIC_NAME:=lib$(MODULE_NAME).a
+else ifeq ("x$(OS_NAME)","xlinux")
+    LDFLAGS:=$(LDFLAGS) -lpthread
+
+    EXEC_NAME:=$(MODULE_NAME)
+    SHARED_NAME:=lib$(MODULE_NAME).so
     STATIC_NAME:=lib$(MODULE_NAME).a
 else
     EXEC_NAME:=$(MODULE_NAME)
