@@ -14,8 +14,8 @@ namespace
 
     TEST_F(test_random, rate)
     {
-        int_random_base<tuint64> my_int_random_1;
-        int_random_base<tuint64> my_int_random_2;
+        basic_integral_random<tuint64> my_int_random_1;
+        basic_integral_random<tuint64> my_int_random_2;
 
         EXPECT_NE(my_int_random_1.get(), my_int_random_2.get());
 
