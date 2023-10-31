@@ -72,6 +72,11 @@ namespace tractor
     };
 
     template <>
+    struct is_basic_signed<tchar> : public std::is_signed<tchar>
+    {
+    };
+
+    template <>
     struct is_basic_signed<tint8> : public std::true_type
     {
     };
@@ -93,6 +98,11 @@ namespace tractor
 
     template <class type>
     struct is_basic_unsigned : public std::false_type
+    {
+    };
+
+    template <>
+    struct is_basic_unsigned<tchar> : public std::is_unsigned<tchar>
     {
     };
 
@@ -133,11 +143,6 @@ namespace tractor
 
     template <class type>
     struct is_basic_integral : public std::integral_constant<bool, is_basic_signed<type>::value || is_basic_unsigned<type>::value>
-    {
-    };
-
-    template <>
-    struct is_basic_integral<tchar> : std::true_type
     {
     };
 

@@ -33,6 +33,7 @@ namespace
 
     TEST(test_type, max_min)
     {
+        test_max_min<tchar>();
         test_max_min<tint8>();
         test_max_min<tint16>();
         test_max_min<tint32>();
