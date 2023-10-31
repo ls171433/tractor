@@ -58,8 +58,7 @@ namespace
     {
         test_integer_types<type>();
 
-        EXPECT_FALSE(is_basic_signed_v<type>);
-        EXPECT_FALSE(is_basic_unsigned_v<type>);
+        EXPECT_TRUE(is_basic_signed_v<type> ^ is_basic_unsigned_v<type>);
     }
 
     template <class type>
