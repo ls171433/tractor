@@ -11,12 +11,6 @@ using namespace tractor;
 // test_type.fundamental_types
 namespace
 {
-    template <class type, tsize size>
-    void test_sizeof()
-    {
-        EXPECT_EQ(sizeof(type), size);
-    }
-
     template <class type>
     void test_integer_types()
     {
@@ -75,41 +69,42 @@ namespace
 
     TEST(test_type, basic_types)
     {
+        test_char_integer_types<tchar>();
+        EXPECT_EQ(sizeof(tchar), 1);
+
         test_signed_integer_types<tint8>();
-        test_sizeof<tint8, 1>();
+        EXPECT_EQ(sizeof(tint8), 1);
         test_signed_integer_types<tint16>();
-        test_sizeof<tint16, 2>();
+        EXPECT_EQ(sizeof(tint16), 2);
         test_signed_integer_types<tint32>();
-        test_sizeof<tint32, 4>();
+        EXPECT_EQ(sizeof(tint32), 4);
         test_signed_integer_types<tint64>();
-        test_sizeof<tint64, 8>();
+        EXPECT_EQ(sizeof(tint64), 8);
 
         test_unsigned_integer_types<tuint8>();
-        test_sizeof<tuint8, 1>();
+        EXPECT_EQ(sizeof(tuint8), 1);
         test_unsigned_integer_types<tuint16>();
-        test_sizeof<tuint16, 2>();
+        EXPECT_EQ(sizeof(tuint16), 2);
         test_unsigned_integer_types<tuint32>();
-        test_sizeof<tuint32, 4>();
+        EXPECT_EQ(sizeof(tuint32), 4);
         test_unsigned_integer_types<tuint64>();
-        test_sizeof<tuint64, 8>();
+        EXPECT_EQ(sizeof(tuint64), 8);
 
         test_floating_point_types<tfloat>();
-        test_sizeof<tfloat, 4>();
+        EXPECT_EQ(sizeof(tfloat), 4);
         test_floating_point_types<tdouble>();
-        test_sizeof<tdouble, 8>();
+        EXPECT_EQ(sizeof(tdouble), 8);
     }
 
     TEST(test_type, other_types)
     {
-        test_char_integer_types<tchar>();
-        test_sizeof<tchar, 1>();
-
         test_unsigned_integer_types<tbyte>();
-        test_sizeof<tbyte, 1>();
+        EXPECT_EQ(sizeof(tbyte), 1);
+
         test_unsigned_integer_types<tsize>();
-        test_sizeof<tsize, sizeof(void*)>();
+        EXPECT_EQ(sizeof(tsize), sizeof(void *));
         test_signed_integer_types<tssize>();
-        test_sizeof<tssize, sizeof(void*)>();
+        EXPECT_EQ(sizeof(tssize), sizeof(void *));
     }
 
     TEST(test_type, fundamental_types)
@@ -118,7 +113,7 @@ namespace
         test_unsigned_integer_types<unsigned int>();
 
         test_char_integer_types<char>();
-        test_sizeof<char, 1>();
+        EXPECT_EQ(sizeof(char), 1);
         EXPECT_TRUE((std::is_same_v<tchar, char>));
 
         test_floating_point_types<float>();
